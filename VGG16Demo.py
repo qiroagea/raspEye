@@ -1,33 +1,22 @@
-import cv2
-import matplotlib.pyplot as plt
-from IPython import display
+from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.preprocessing.image import img_to_array, load_img
 import numpy as np
 
-from keras_applications.vgg16 import VGG16, preprocess_input, decode_predictions
-from keras_preprocessing import image
+# 学習済みモデルの読み込み
+model = VGG16(include_top=True, weights='imagenet', input_shape=None)
+model.summary()
 
-model = VGG16(weights='imagenet')
+# 'data' フォルダから画像データの読み込み
+x = []
+img = img_to_array(load_img('./data/yosaku.png', target_size=(244, 244)))
+x.append(img)
+ary = np.asarray(x)
+print('ary shape:', ary.shape)
 
-vc = cv2.VideoCapture(0)
-
-if vc.isOpened():
-    is_capturing, frame = vc.read()
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    webcam_preview = plt.imshow(frame)
-else:
-    is_capturing = False
-
-while is_capturing:
-    try:
-        is_capturing, frame = vc.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        webcam_preview.set_data(frame)
-        plt.draw()
-
-        display.clear_output(wait=True)
-        display.display(plt.gcf())
-
-        plt.pause(0.1)
-    except KeyboardInterrupt:
-        vc.release()
-        is_capturing = False
+# トップ5を認識
+for i in range(len(ary)):
+    preds = model.predict(preprocess_input(ary))
+    results = decode_predictions(preds, top=5)[i]
+    print(i)
+    for results in results:
+        print(results)
