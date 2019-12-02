@@ -79,3 +79,10 @@ vgg_model.compile(
 )
 
 # ---- ファイン！ ---- #
+history = vgg_model.fit_generator(
+    train_generator,
+    samples_er_epoch=nb_train_samples,
+    nb_epoch=nb_epoch,
+    validation_data=validation_generator,
+    nb_val_samples=nb_validation_samples
+)
