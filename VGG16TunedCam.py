@@ -1,14 +1,15 @@
 # URL: http://cedro3.com/ai/keras-vgg16/
 # URL: https://uchidama.hatenablog.com/entry/2018/02/15/063200
 
-from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+from keras.applications.vgg16 import preprocess_input, decode_predictions
 from keras.preprocessing import image
+from keras.models import load_model
 import numpy as np
 import cv2
 from PIL import Image
 
 # 学習済みモデルの読み込み
-model = VGG16(include_top=True, weights='imagenet', input_shape=None)
+model = load_model('fineTuned.h5')
 model.summary()
 
 # カメラから画像データの読み込み
@@ -22,9 +23,11 @@ cap = cv2.VideoCapture()
 # トップ5を認識
 while True:
     ret, frame = cap.read()
-#    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    cv2.imshow("Show FLAME Image", frame)
-    img = Image.fromarray(np.uint8(frame))
+    #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #    cv2.imshow("Show FLAME Image", frame)
+    img = Image.fromarray(
+        np.uint8(frame)
+    )
     img = img.resize((224, 224))
     x = image.img_to_array(img)
     ary = np.expand_dims(x, axis=0)
@@ -40,4 +43,4 @@ while True:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
