@@ -1,14 +1,15 @@
 # Qiita: GPUを使ってVGG16をFine Tuningして、顔認識AIを作って見た
 
-import os
+# import os
 from keras.applications.vgg16 import VGG16
-from keras.preprocessing.image import ImageDataGenerator
+# from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential, Model
-from keras.layers import Input, Activation, Dropout, Flatten, Dense
+from keras.layers import Input, Dropout, Flatten, Dense  # , Activation
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
-import numpy as np
-import time
+# import numpy as np
+# import time
+import matplotlib.pyplot as plt
 
 # ---- 分類するクラス ---- #
 classes = ["西垣前", "3F階段前", "4F階段前", "D5前", "D4前"]
@@ -32,8 +33,8 @@ batch_size = 53
 nb_epoch = 6
 
 # ---- ジェネレータの作成 ---- #
-train_datagen = ImageDataGenerator(rescale=1.0/255)
-validation_datagen = ImageDataGenerator(rescale=1.0/255)
+train_datagen = ImageDataGenerator(rescale=1.0 / 255)
+validation_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
 train_generator = train_datagen.flow_from_directory(
     train_data_dir,
@@ -59,7 +60,7 @@ vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
 # ---- FC層の作成 ---- #
 top_model = Sequential()
-top_model.add(Flatten(input_shape=vgg16.outputshape[1:]))
+top_model.add(Flatten(input_shape=vgg16.output_shape[1:]))
 top_model.add(Dense(256, activation='relu'))
 top_model.add(Dropout(0.5))
 top_model.add(Dense(nb_classes, activation='softmax'))
@@ -81,8 +82,20 @@ vgg_model.compile(
 # ---- ファイン！ ---- #
 history = vgg_model.fit_generator(
     train_generator,
-    samples_er_epoch=nb_train_samples,
+    samples_per_epoch=nb_train_samples,
     nb_epoch=nb_epoch,
     validation_data=validation_generator,
     nb_val_samples=nb_validation_samples
 )
+
+# ---- プロット ---- #
+plt.plot(history.history["acc"], label="acc", ls="-", marker="o")
+plt.plot(history.history["val_acc"], label="val_acc", ls="-", marker="x")
+plt.ylabel("accuracy")
+plt.xlabel("epoch")
+plt.legend(loc="best")
+plt.savefig('finish.png')
+plt.show()
+
+# ---- モデルの保存 ---- #
+vgg_model.save("fineTuned.h5")
