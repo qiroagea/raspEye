@@ -12,7 +12,7 @@ model = VGG16(include_top=True, weights='imagenet', input_shape=None)
 model.summary()
 
 # カメラから画像データの読み込み
-cap = cv2.VideoCapture()
+cap = cv2.VideoCapture(0)
 # x = []
 # img = img_to_array(load_img('./data/yosaku.jpg', target_size=(224, 224)))
 # x.append(img)
