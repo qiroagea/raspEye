@@ -1,14 +1,10 @@
 # Qiita: GPUを使ってVGG16をFine Tuningして、顔認識AIを作って見た
 
-# import os
-from keras.applications.vgg16 import VGG16
-# from keras.preprocessing.image import ImageDataGenerator
+from keras.applications.mobilenet import MobileNet
 from keras.models import Sequential, Model
-from keras.layers import Input, Dropout, Flatten, Dense  # , Activation
+from keras.layers import Input, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
-# import numpy as np
-# import time
 import matplotlib.pyplot as plt
 
 # ---- 分類するクラス ---- #
@@ -56,31 +52,31 @@ validation_generator = validation_datagen.flow_from_directory(
 
 # ---- VGG16のロード（FC層は無効化） ---- #
 input_tensor = Input(shape=(img_width, img_height, 3))
-vgg16 = VGG16(include_top=False, weights='imagenet', input_tensor=input_tensor)
+mnet = MobileNet(include_top=False, weights='imagenet', input_tensor=input_tensor)
 
 # ---- FC層の作成 ---- #
 top_model = Sequential()
-top_model.add(Flatten(input_shape=vgg16.output_shape[1:]))
+top_model.add(Flatten(input_shape=mnet.output_shape[1:]))
 top_model.add(Dense(256, activation='relu'))
 top_model.add(Dropout(0.5))
 top_model.add(Dense(nb_classes, activation='softmax'))
 
 # ---- モデルの結合 ---- #
-vgg_model = Model(input=vgg16.input, output=top_model(vgg16.output))
+mnet_model = Model(input=mnet.input, output=top_model(mnet.output))
 
 # ---- VGG16の重みを固定 ---- #
-for layer in vgg_model.layers[:15]:
+for layer in mnet_model.layers[:15]:
     layer.trainable = False
 
 # ---- 多クラス分類を指定 ---- #
-vgg_model.compile(
+mnet_model.compile(
     loss='categorical_crossentropy',
     optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),
     metrics=['accuracy']
 )
 
 # ---- ファイン！ ---- #
-history = vgg_model.fit_generator(
+history = mnet_model.fit_generator(
     train_generator,
     samples_per_epoch=nb_train_samples,
     nb_epoch=nb_epoch,
@@ -98,4 +94,4 @@ plt.savefig('finish.png')
 plt.show()
 
 # ---- モデルの保存 ---- #
-vgg_model.save("fineTuned.h5")
+mnet_model.save("fineTuned.h5")
