@@ -8,25 +8,25 @@ from keras import optimizers
 import matplotlib.pyplot as plt
 
 # ---- 分類するクラス ---- #
-classes = ["西垣前", "3F階段前", "4F階段前", "D5前", "D4前"]
+classes = ["3FWC前", "3F階段踊り場", "4FWC前", "4F階段踊り場", "D4HR前", "D5HR前", "西垣前"]
 nb_classes = len(classes)
 
 # ---- 画像の大きさを設定 ---- #
-img_width, img_height = 256, 256
+img_width, img_height = 1600, 1200
 
 # ---- 画像の格納先（トレーニング用とバリデーション用） ---- #
 train_data_dir = './data'
 validation_data_dir = './test'
 
 # ---- 画像のデータ数 ---- #
-nb_train_samples = 318
-nb_validation_samples = 16
+nb_train_samples = 4347
+nb_validation_samples = 281
 
 # ---- バッチサイズ ---- #
-batch_size = 53
+batch_size = 63
 
 # ---- エポック数 ---- #
-nb_epoch = 6
+nb_epoch = 69
 
 # ---- ジェネレータの作成 ---- #
 train_datagen = ImageDataGenerator(rescale=1.0 / 255)
