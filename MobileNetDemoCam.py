@@ -23,7 +23,7 @@ cap = cv2.VideoCapture(0)
 while True:
     ret, frame = cap.read()
     #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    cv2.imshow("Show FLAME Image", frame)
+    #    cv2.imshow("Show FLAME Image", frame)
     img = Image.fromarray(np.uint8(frame))
     img = img.resize((224, 224))
     x = image.img_to_array(img)
@@ -40,4 +40,4 @@ while True:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+#   cv2.destroyAllWindows()
