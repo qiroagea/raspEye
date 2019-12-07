@@ -12,7 +12,7 @@ classes = ["3FWC前", "3F階段踊り場", "4FWC前", "4F階段踊り場", "D4HR
 nb_classes = len(classes)
 
 # ---- 画像の大きさを設定 ---- #
-img_width, img_height = 1600, 1200
+img_width, img_height = 160, 120
 
 # ---- 画像の格納先（トレーニング用とバリデーション用） ---- #
 train_data_dir = './data'
@@ -23,10 +23,10 @@ nb_train_samples = 4347
 nb_validation_samples = 281
 
 # ---- バッチサイズ ---- #
-batch_size = 63
+batch_size = 161
 
 # ---- エポック数 ---- #
-nb_epoch = 69
+nb_epoch = 27
 
 # ---- ジェネレータの作成 ---- #
 train_datagen = ImageDataGenerator(rescale=1.0 / 255)
