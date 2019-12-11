@@ -8,7 +8,7 @@ import cv2
 from PIL import Image
 
 # 学習済みモデルの読み込み
-model = load_model('fineTuned.h5')
+model = load_model('mobileNetV2.h5')
 model.summary()
 
 # カメラから画像データの読み込み
@@ -25,7 +25,7 @@ while True:
 #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 #    cv2.imshow("Show FLAME Image", frame)
     img = Image.fromarray(np.uint8(frame))
-    img = img.resize((150, 150))
+    img = img.resize((120, 160))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
     # ary = np.asarray(frame)
@@ -36,7 +36,7 @@ while True:
     results = model.predict(x)[0]
     #    print(i)
     # for results in results:
-    print("西垣前, 3F階段前, 4F階段前, D5前, D4前")
+    print("接近1, 接近2, 通過1, 通過2, 無")
     print(results*100)
     k = cv2.waitKey(10)
     if k == ord('q'):
