@@ -20,27 +20,29 @@ cap = cv2.VideoCapture(0)
 # print('ary shape:', ary.shape)
 
 # トップ5を認識
-while True:
-    ret, frame = cap.read()
-#    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-#    cv2.imshow("Show FLAME Image", frame)
-    img = Image.fromarray(np.uint8(frame))
-    img = img.resize((120, 160))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    # ary = np.asarray(frame)
-    x = x / 255.0
-    #    for i in range(len(ary)):
-    # preds = model.predict(preprocess_input(ary))
-    # results = decode_predictions(preds, top=5)[0]
-    results = model.predict(x)[0]
-    #    print(i)
-    # for results in results:
-    print("接近1, 接近2, 通過1, 通過2, 無")
-    print(results*100)
-    k = cv2.waitKey(10)
-    if k == ord('q'):
-        break
+def disc():
+    #while True:
+        ret, frame = cap.read()
+    #    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #    cv2.imshow("Show FLAME Image", frame)
+        img = Image.fromarray(np.uint8(frame))
+        img = img.resize((120, 160))
+        x = image.img_to_array(img)
+        x = np.expand_dims(x, axis=0)
+        # ary = np.asarray(frame)
+        x = x / 255.0
+        #    for i in range(len(ary)):
+        # preds = model.predict(preprocess_input(ary))
+        # results = decode_predictions(preds, top=5)[0]
+        results = model.predict(x)[0]
+        #    print(i)
+        # for results in results:
+        #print("接近1, 接近2, 通過1, 通過2, 無")
+        #print(results*100)
+        #k = cv2.waitKey(10)
+        #if k == ord('q'):
+            #break
+        return results
 
 cap.release()
 # cv2.destroyAllWindows()
