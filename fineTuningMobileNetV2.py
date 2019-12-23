@@ -8,7 +8,7 @@ from keras import optimizers
 import matplotlib.pyplot as plt
 
 # ---- 分類するクラス ---- #
-classes = ["下接近", "下通過", "上接近", "上通過", "無",]
+classes = ["下接近", "下通過", "上接近", "上通過右", "上通過左", "無"]
 nb_classes = len(classes)
 
 # ---- 画像の大きさを設定 ---- #
@@ -19,14 +19,14 @@ train_data_dir = './data'
 validation_data_dir = './test'
 
 # ---- 画像のデータ数 ---- #
-nb_train_samples = 1185
-nb_validation_samples = 15
+nb_train_samples = 2609
+nb_validation_samples = 167
 
 # ---- バッチサイズ ---- #
-batch_size = 79
+batch_size = 261
 
 # ---- エポック数 ---- #
-nb_epoch = 15
+nb_epoch = 10
 
 # ---- ジェネレータの作成 ---- #
 train_datagen = ImageDataGenerator(rescale=1.0 / 255)
